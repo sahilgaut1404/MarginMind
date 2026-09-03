@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MarginMind | Insights</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        /* =========================================
+           INSIGHTS PAGE
+        ========================================= */
+
+        .insights-page {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 35px 30px 60px;
+        }
+
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+
+        .page-heading h2 {
+            font-size: 30px;
+            margin: 0 0 8px;
+        }
+
+
+        .page-heading p {
+            color: #666;
+            font-size: 15px;
+            margin: 0;
+        }
+
+
+        /* =========================================
+           BUSINESS OVERVIEW
+        ========================================= */
+
+        .overview-section {
+            margin-bottom: 30px;
+        }
+
+
+        .overview-title {
+            font-size: 21px;
+            margin-bottom: 16px;
+        }
+
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .overview-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .overview-label {
+            display: block;
+            color: #666666;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+
+        .overview-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+
+        /* =========================================
+           PRODUCT OVERVIEW
+        ========================================= */
+
+        .product-overview {
+            margin-bottom: 30px;
+        }
+
+
+        .product-overview h2 {
+            font-size: 21px;
+            margin-bottom: 16px;
+        }
+
+
+        .product-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .product-kpi {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .product-kpi-title {
+            display: block;
+            color: #666666;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+
+        .product-kpi-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+
+        /* =========================================
+           CHART GRID
+        ========================================= */
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-bottom: 30px;
+        }
+
+
+        .chart-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+
+        .chart-header {
+            margin-bottom: 18px;
+        }
+
+
+        .chart-header h3 {
+            margin: 0 0 6px;
+            font-size: 18px;
+            color: #111111;
+        }
+
+
+        .chart-header p {
+            margin: 0;
+            color: #777777;
+            font-size: 13px;
+        }
+
+
+        .chart-container {
+            position: relative;
+            height: 330px;
+        }
+
+
+        .full-width .chart-container {
+            height: 360px;
+        }
+
+
+        /* =========================================
+           AI SECTION
+        ========================================= */
+
+        .ai-section {
+            margin-top: 10px;
+        }
+
+
+        .ai-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+        }
+
+
+        .ai-card h3 {
+            margin: 0 0 8px;
+            font-size: 19px;
+            color: #111111;
+        }
+
+
+        .ai-card p {
+            color: #666666;
+            margin: 0 0 20px;
+        }
+
+
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+
+        .question {
+            padding: 14px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #fafafa;
+            color: #333333;
+            font-size: 14px;
+        }
+
+
+        .question:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .product-kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .chart-card.full-width {
+                grid-column: auto;
+            }
+
+
+            .question-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .insights-page {
+                padding: 25px 15px 40px;
+            }
+
+
+            .page-heading h2 {
+                font-size: 24px;
+            }
+
+
+            .overview-value {
+                font-size: 24px;
+            }
+
+
+            .chart-container {
+                height: 280px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>MarginMind</h1>
+
+    <p>
+        Business Insights
+    </p>
+
+</header>
+
+
+<nav class="top-nav">
+
+    <a href="/dashboard">
+        Dashboard
+    </a>
+
+    <a href="/insights-page">
+        Insights
+    </a>
+
+    <a href="/recommendations-page">
+        Recommendations
+    </a>
+
+    <a href="/chatbot">
+        AI Assistant
+    </a>
+
+    <a href="/audit-page">
+        Audit Logs
+    </a>
+
+</nav>
+
+
+<main class="insights-page">
+
+
+    <!-- =========================================
+         PAGE HEADING
+    ========================================== -->
+
+    <div class="page-heading">
+
+        <h2>
+            Business Insights
+        </h2>
+
+        <p>
+            Understand your business performance,
+            products and inventory at a glance.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         BUSINESS OVERVIEW
+    ========================================== -->
+
+    <section class="overview-section">
+
+        <h2 class="overview-title">
+            Business Overview
+        </h2>
+
+
+        <div class="overview-grid">
+
+
+            <!-- TOTAL REVENUE -->
+
+            <div class="overview-card">
+
+                <span class="overview-label">
+                    Total Revenue
+                </span>
+
+                <div
+                    class="overview-value"
+                    id="totalRevenue"
+                >
+                    ₹0.00
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL ORDERS -->
+
+            <div class="overview-card">
+
+                <span class="overview-label">
+                    Total Orders
+                </span>
+
+                <div
+                    class="overview-value"
+                    id="totalOrders"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <!-- UNITS SOLD -->
+
+            <div class="overview-card">
+
+                <span class="overview-label">
+                    Units Sold
+                </span>
+
+                <div
+                    class="overview-value"
+                    id="unitsSold"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         PRODUCT OVERVIEW
+    ========================================== -->
+
+    <section class="product-overview">
+
+        <h2>
+            Product Overview
+        </h2>
+
+
+        <div class="product-kpi-grid">
+
+
+            <div class="product-kpi">
+
+                <span class="product-kpi-title">
+                    Total Products
+                </span>
+
+                <div
+                    class="product-kpi-value"
+                    id="totalProducts"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="product-kpi">
+
+                <span class="product-kpi-title">
+                    Total Inventory
+                </span>
+
+                <div
+                    class="product-kpi-value"
+                    id="totalStock"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="product-kpi">
+
+                <span class="product-kpi-title">
+                    Average Price
+                </span>
+
+                <div
+                    class="product-kpi-value"
+                    id="averagePrice"
+                >
+                    ₹0.00
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CHARTS
+    ========================================== -->
+
+    <div class="charts-grid">
+
+
+        <!-- PRODUCT PRICES -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <h3>
+                    Product Prices
+                </h3>
+
+                <p>
+                    Current selling price by product
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="priceChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- INVENTORY -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <h3>
+                    Inventory Levels
+                </h3>
+
+                <p>
+                    Current stock available for each product
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="stockChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRICE VS STOCK -->
+
+        <div class="chart-card full-width">
+
+            <div class="chart-header">
+
+                <h3>
+                    Price vs Inventory
+                </h3>
+
+                <p>
+                    Compare product pricing with available stock
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="comparisonChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
+         AI ASSISTANT
+    ========================================== -->
+
+    <section class="ai-section">
+
+        <div class="ai-card">
+
+            <h3>
+                Ask MarginMind
+            </h3>
+
+            <p>
+                Use the AI Assistant to understand your business
+                and get data-driven recommendations.
+            </p>
+
+
+            <div class="question-grid">
+
+
+                <div class="question">
+                    How is my business performing?
+                </div>
+
+
+                <div class="question">
+                    Which product sells the most?
+                </div>
+
+
+                <div class="question">
+                    Which product should I change the price for?
+                </div>
+
+
+                <div class="question">
+                    Which product has excess stock?
+                </div>
+
+
+                <div class="question">
+                    What can I do to increase sales?
+                </div>
+
+
+                <div class="question">
+                    Show me my product performance
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+
+/* =========================================
+   LOAD BUSINESS SUMMARY
+========================================= */
+
+async function loadBusinessSummary() {
+
+    try {
+
+        const response =
+            await fetch("/dashboard summary");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load business summary"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        /*
+         * Backend stores revenue in paise.
+         * Convert to rupees for display.
+         */
+
+        document.getElementById(
+            "totalRevenue"
+        ).textContent =
+            "₹" +
+            (data.total_revenue / 100)
+                .toFixed(2);
+
+
+        document.getElementById(
+            "totalOrders"
+        ).textContent =
+            data.total_orders;
+
+
+        document.getElementById(
+            "unitsSold"
+        ).textContent =
+            data.units_sold;
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Business summary error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD PRODUCT DATA
+========================================= */
+
+async function loadInsightCharts() {
+
+    try {
+
+        const response =
+            await fetch("/product");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load products"
+            );
+
+        }
+
+
+        const products =
+            await response.json();
+
+
+        if (
+            !products ||
+            products.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        /* =========================================
+           PREPARE DATA
+        ========================================= */
+
+        const productNames =
+            products.map(
+                product => product.name
+            );
+
+
+        const prices =
+            products.map(
+                product =>
+                    product.price / 100
+            );
+
+
+        const stock =
+            products.map(
+                product =>
+                    product.stock
+            );
+
+
+        /* =========================================
+           PRODUCT KPIs
+        ========================================= */
+
+        const totalStock =
+            stock.reduce(
+                (sum, value) =>
+                    sum + value,
+                0
+            );
+
+
+        const averagePrice =
+            prices.reduce(
+                (sum, value) =>
+                    sum + value,
+                0
+            ) / prices.length;
+
+
+        document.getElementById(
+            "totalProducts"
+        ).textContent =
+            products.length;
+
+
+        document.getElementById(
+            "totalStock"
+        ).textContent =
+            totalStock;
+
+
+        document.getElementById(
+            "averagePrice"
+        ).textContent =
+            "₹" +
+            averagePrice.toFixed(2);
+
+
+        /* =========================================
+           PRICE CHART
+        ========================================= */
+
+        new Chart(
+
+            document.getElementById(
+                "priceChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: productNames,
+
+                    datasets: [
+
+                        {
+
+                            label: "Price (₹)",
+
+                            data: prices
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                callback:
+                                    function(value) {
+
+                                        return "₹" +
+                                            value;
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        /* =========================================
+           STOCK CHART
+        ========================================= */
+
+        new Chart(
+
+            document.getElementById(
+                "stockChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: productNames,
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Stock (units)",
+
+                            data: stock
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        /* =========================================
+           PRICE VS STOCK CHART
+        ========================================= */
+
+        new Chart(
+
+            document.getElementById(
+                "comparisonChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: productNames,
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Price (₹)",
+
+                            data: prices,
+
+                            yAxisID:
+                                "priceAxis"
+
+                        },
+
+
+                        {
+
+                            label:
+                                "Stock (units)",
+
+                            data: stock,
+
+                            yAxisID:
+                                "stockAxis"
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+
+                    interaction: {
+
+                        mode: "index",
+
+                        intersect: false
+
+                    },
+
+
+                    scales: {
+
+                        priceAxis: {
+
+                            type: "linear",
+
+                            position: "left",
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                callback:
+                                    function(value) {
+
+                                        return "₹" +
+                                            value;
+
+                                    }
+
+                            }
+
+                        },
+
+
+                        stockAxis: {
+
+                            type: "linear",
+
+                            position: "right",
+
+                            beginAtZero: true,
+
+                            grid: {
+
+                                drawOnChartArea:
+                                    false
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Insights error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   PAGE LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadBusinessSummary();
+
+        loadInsightCharts();
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>

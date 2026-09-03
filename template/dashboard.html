@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MarginMind | Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+    <style>
+
+        /* =========================================
+           DASHBOARD
+        ========================================= */
+
+        .dashboard-container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 35px 30px 60px;
+        }
+
+
+        .dashboard-heading {
+            margin-bottom: 30px;
+        }
+
+
+        .dashboard-heading h2 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #111;
+        }
+
+
+        .dashboard-heading p {
+            margin: 0;
+            color: #666;
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           MAIN SHOP LAYOUT
+        ========================================= */
+
+        .shop-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+            align-items: start;
+        }
+
+
+        /* =========================================
+           PRODUCTS
+        ========================================= */
+
+        .products-section {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+
+        .section-header {
+            margin-bottom: 22px;
+        }
+
+
+        .section-header h3 {
+            margin: 0 0 6px;
+            font-size: 20px;
+            color: #111;
+        }
+
+
+        .section-header p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+
+        /* =========================================
+           PRODUCT CARD
+        ========================================= */
+
+        .product-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            background: #fff;
+            transition: 0.2s;
+        }
+
+
+        .product-card:hover {
+            border-color: #cfd3d8;
+            box-shadow: 0 5px 16px rgba(0,0,0,0.07);
+            transform: translateY(-2px);
+        }
+
+
+        .product-category {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 12px;
+        }
+
+
+        .product-price {
+            font-size: 23px;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+
+        .product-stock {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 18px;
+        }
+
+
+        .add-cart-button {
+            width: 100%;
+            padding: 11px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+
+        .add-cart-button:hover {
+            background: #333;
+        }
+
+
+        .add-cart-button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+
+        /* =========================================
+           CART
+        ========================================= */
+
+        .cart-section {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 20px;
+        }
+
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .cart-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+
+        .cart-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+
+        .empty-cart {
+            padding: 30px 10px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           CART ITEM
+        ========================================= */
+
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+
+        .cart-item-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #666;
+        }
+
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+
+        .quantity-button {
+    width: 42px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #111111;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-button:hover {
+    background: #f3f4f6;
+    color: #000000;
+}
+
+        .remove-button {
+            border: none;
+            background: transparent;
+            color: #777;
+            cursor: pointer;
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+
+        .remove-button:hover {
+            color: #111;
+        }
+
+
+        /* =========================================
+           CART TOTAL
+        ========================================= */
+
+        .cart-total {
+            border-top: 1px solid #e5e7eb;
+            margin-top: 15px;
+            padding-top: 18px;
+        }
+
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+
+        .total-label {
+            font-size: 15px;
+            color: #555;
+        }
+
+
+        .total-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111;
+        }
+
+
+        .checkout-button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+
+        .checkout-button:hover {
+            background: #333;
+        }
+
+
+        .checkout-button:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+
+        .payment-message {
+            margin-top: 12px;
+            font-size: 13px;
+            text-align: center;
+            color: #555;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 950px) {
+
+            .shop-layout {
+                grid-template-columns: 1fr;
+            }
+
+
+            .cart-section {
+                position: static;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .dashboard-container {
+                padding: 25px 15px 40px;
+            }
+
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .dashboard-heading h2 {
+                font-size: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>MarginMind</h1>
+
+    <p>
+        AI Merchant Growth Dashboard
+    </p>
+
+</header>
+
+
+<nav class="top-nav">
+
+    <a href="/dashboard">
+        Dashboard
+    </a>
+
+    <a href="/insights-page">
+        Insights
+    </a>
+
+    <a href="/recommendations-page">
+        Recommendations
+    </a>
+
+    <a href="/chatbot">
+        AI Assistant
+    </a>
+
+    <a href="/audit-page">
+        Audit Logs
+    </a>
+
+</nav>
+
+
+<main class="dashboard-container">
+
+
+    <!-- =========================================
+         HEADING
+    ========================================== -->
+
+    <div class="dashboard-heading">
+
+        <h2>
+            Store Dashboard
+        </h2>
+
+        <p>
+            Select products and add them to your cart before checkout.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         SHOP
+    ========================================== -->
+
+    <div class="shop-layout">
+
+
+        <!-- =====================================
+             PRODUCTS
+        ====================================== -->
+
+        <section class="products-section">
+
+
+            <div class="section-header">
+
+                <h3>
+                    Products
+                </h3>
+
+                <p>
+                    Choose a product to add to your cart.
+                </p>
+
+            </div>
+
+
+            <div
+                id="productsGrid"
+                class="products-grid"
+            >
+
+                <p>
+                    Loading products...
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =====================================
+             CART
+        ====================================== -->
+
+        <aside class="cart-section">
+
+
+            <div class="cart-header">
+
+                <h3>
+                    Cart
+                </h3>
+
+                <span
+                    id="cartCount"
+                    class="cart-count"
+                >
+                    0 items
+                </span>
+
+            </div>
+
+
+            <div id="cartItems">
+
+                <div class="empty-cart">
+
+                    Your cart is empty.
+
+                    <br><br>
+
+                    Add a product to continue.
+
+                </div>
+
+            </div>
+
+
+            <div class="cart-total">
+
+
+                <div class="total-row">
+
+                    <span class="total-label">
+                        Total
+                    </span>
+
+                    <span
+                        id="cartTotal"
+                        class="total-value"
+                    >
+                        ₹0.00
+                    </span>
+
+                </div>
+
+
+                <button
+                    id="checkoutButton"
+                    class="checkout-button"
+                    type="button"
+                    disabled
+                >
+                    Proceed to Checkout
+                </button>
+
+
+                <div
+                    id="paymentMessage"
+                    class="payment-message"
+                ></div>
+
+
+            </div>
+
+
+        </aside>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+/* =========================================
+   CART
+========================================= */
+
+let products = [];
+
+let cart = [];
+
+
+/* =========================================
+   LOAD PRODUCTS
+========================================= */
+
+async function loadProductsForStore() {
+
+    try {
+
+        const response =
+            await fetch("/product");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load products"
+            );
+
+        }
+
+
+        products =
+            await response.json();
+
+
+        renderProducts();
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Product loading error:",
+            error
+        );
+
+
+        document.getElementById(
+            "productsGrid"
+        ).innerHTML = `
+
+            <p>
+                Unable to load products.
+            </p>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   RENDER PRODUCTS
+========================================= */
+
+function renderProducts() {
+
+    const container =
+        document.getElementById(
+            "productsGrid"
+        );
+
+
+    container.innerHTML = "";
+
+
+    products.forEach(product => {
+
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "product-card";
+
+
+        const price =
+            product.price / 100;
+
+
+        const outOfStock =
+            product.stock <= 0;
+
+
+        card.innerHTML = `
+
+            <div class="product-category">
+                ${escapeHTML(product.category)}
+            </div>
+
+            <div class="product-name">
+                ${escapeHTML(product.name)}
+            </div>
+
+            <div class="product-price">
+                ₹${price.toFixed(2)}
+            </div>
+
+            <div class="product-stock">
+                ${product.stock} units available
+            </div>
+
+            <button
+                class="add-cart-button"
+                ${outOfStock ? "disabled" : ""}
+                onclick="addToCart(${product.id})"
+            >
+                ${outOfStock ? "Out of Stock" : "Add to Cart"}
+            </button>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================
+   ADD TO CART
+========================================= */
+
+function addToCart(productId) {
+
+    const product =
+        products.find(
+            item => item.id === productId
+        );
+
+
+    if (!product) {
+
+        return;
+
+    }
+
+
+    const existingItem =
+        cart.find(
+            item => item.id === productId
+        );
+
+
+    if (existingItem) {
+
+        if (
+            existingItem.quantity <
+            product.stock
+        ) {
+
+            existingItem.quantity += 1;
+
+        }
+
+    }
+    else {
+
+        cart.push({
+
+            id: product.id,
+
+            name: product.name,
+
+            price: product.price,
+
+            stock: product.stock,
+
+            quantity: 1
+
+        });
+
+    }
+
+
+    renderCart();
+
+}
+
+
+/* =========================================
+   CHANGE QUANTITY
+========================================= */
+
+function changeQuantity(
+    productId,
+    change
+) {
+
+    const item =
+        cart.find(
+            item => item.id === productId
+        );
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    item.quantity += change;
+
+
+    if (item.quantity <= 0) {
+
+        cart =
+            cart.filter(
+                item => item.id !== productId
+            );
+
+    }
+
+
+    if (
+        item.quantity > item.stock
+    ) {
+
+        item.quantity =
+            item.stock;
+
+    }
+
+
+    renderCart();
+
+}
+
+
+/* =========================================
+   REMOVE FROM CART
+========================================= */
+
+function removeFromCart(productId) {
+
+    cart =
+        cart.filter(
+            item => item.id !== productId
+        );
+
+
+    renderCart();
+
+}
+
+
+/* =========================================
+   RENDER CART
+========================================= */
+
+function renderCart() {
+
+    const cartContainer =
+        document.getElementById(
+            "cartItems"
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    const cartTotal =
+        document.getElementById(
+            "cartTotal"
+        );
+
+
+    const checkoutButton =
+        document.getElementById(
+            "checkoutButton"
+        );
+
+
+    if (cart.length === 0) {
+
+        cartContainer.innerHTML = `
+
+            <div class="empty-cart">
+
+                Your cart is empty.
+
+                <br><br>
+
+                Add a product to continue.
+
+            </div>
+
+        `;
+
+
+        cartCount.textContent =
+            "0 items";
+
+
+        cartTotal.textContent =
+            "₹0.00";
+
+
+        checkoutButton.disabled =
+            true;
+
+
+        return;
+
+    }
+    if (cart.length > 1) {
+
+    document.getElementById(
+        "paymentMessage"
+    ).textContent =
+        "Please checkout one product at a time.";
+
+    return;
+
+}
+
+
+    cartContainer.innerHTML = "";
+
+
+    let total = 0;
+
+    let itemCount = 0;
+
+
+    cart.forEach(item => {
+
+        const itemTotal =
+            item.price *
+            item.quantity;
+
+
+        total += itemTotal;
+
+        itemCount +=
+            item.quantity;
+
+
+        const cartItem =
+            document.createElement("div");
+
+
+        cartItem.className =
+            "cart-item";
+
+
+        cartItem.innerHTML = `
+
+            <div class="cart-item-name">
+
+                ${escapeHTML(item.name)}
+
+            </div>
+
+
+            <div class="cart-item-details">
+
+                <span>
+                    ₹${(
+                        item.price / 100
+                    ).toFixed(2)}
+                </span>
+
+                <span>
+                    ₹${(
+                        itemTotal / 100
+                    ).toFixed(2)}
+                </span>
+
+            </div>
+
+
+            <div class="quantity-controls">
+
+                <button
+                    class="quantity-button"
+                    onclick="changeQuantity(
+                        ${item.id},
+                        -1
+                    )"
+                >
+                    -
+                </button>
+
+
+                <span>
+                    ${item.quantity}
+                </span>
+
+
+                <button
+                    class="quantity-button"
+                    onclick="changeQuantity(
+                        ${item.id},
+                        1
+                    )"
+                >
+                    +
+                </button>
+
+
+                <button
+                    class="remove-button"
+                    onclick="removeFromCart(
+                        ${item.id}
+                    )"
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        `;
+
+
+        cartContainer.appendChild(
+            cartItem
+        );
+
+    });
+
+
+    cartCount.textContent =
+        itemCount +
+        (
+            itemCount === 1
+                ? " item"
+                : " items"
+        );
+
+
+    cartTotal.textContent =
+        "₹" +
+        (total / 100).toFixed(2);
+
+
+    checkoutButton.disabled =
+        false;
+
+}
+
+
+/* =========================================
+   CHECKOUT
+========================================= */
+
+async function startCheckout() {
+
+    if (cart.length === 0) {
+
+        return;
+
+    }
+
+
+    const checkoutButton =
+        document.getElementById(
+            "checkoutButton"
+        );
+
+
+    const message =
+        document.getElementById(
+            "paymentMessage"
+        );
+
+
+    checkoutButton.disabled =
+        true;
+
+
+    message.textContent =
+        "Preparing checkout...";
+
+
+    try {
+
+
+        /*
+         * Current backend /order accepts
+         * one product per order.
+         *
+         * Therefore, checkout is started
+         * for the first cart item.
+         */
+
+        const item = cart[0];
+
+
+        const amount =
+            item.price *
+            item.quantity;
+
+
+        /* =====================================
+           CREATE RAZORPAY ORDER
+        ====================================== */
+
+        const orderResponse =
+            await fetch(
+                "/order",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        amount: amount,
+
+                        product_id:
+                            item.id,
+
+                        quantity:
+                            item.quantity
+
+                    })
+
+                }
+            );
+
+
+        if (!orderResponse.ok) {
+
+            throw new Error(
+                "Unable to create order"
+            );
+
+        }
+
+
+        const order =
+            await orderResponse.json();
+
+
+        /* =====================================
+           GET RAZORPAY KEY
+        ====================================== */
+
+        const keyResponse =
+            await fetch(
+                "/razorpay-key"
+            );
+
+
+        if (!keyResponse.ok) {
+
+            throw new Error(
+                "Unable to get Razorpay key"
+            );
+
+        }
+
+
+        const keyData =
+            await keyResponse.json();
+
+
+        /* =====================================
+           RAZORPAY CHECKOUT
+        ====================================== */
+
+        const options = {
+
+            key:
+                keyData.key_id,
+
+            amount:
+                order.amount,
+
+            currency:
+                "INR",
+
+            name:
+                "MarginMind",
+
+            description:
+                item.name,
+
+            order_id:
+                order.id,
+
+
+            handler:
+                async function(response) {
+
+                    message.textContent =
+                        "Verifying payment...";
+
+
+                    try {
+
+                        const verifyResponse =
+                            await fetch(
+                                "/verify-payment",
+                                {
+
+                                    method:
+                                        "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            razorpay_payment_id:
+                                                response.razorpay_payment_id,
+
+                                            razorpay_order_id:
+                                                response.razorpay_order_id,
+
+                                            razorpay_signature:
+                                                response.razorpay_signature
+
+                                        })
+
+                                }
+                            );
+
+
+                        const result =
+                            await verifyResponse.json();
+
+
+                        if (!verifyResponse.ok) {
+
+                            throw new Error(
+                                result.detail ||
+                                "Payment verification failed"
+                            );
+
+                        }
+
+
+                        message.textContent =
+                            "Payment verified successfully.";
+
+
+                        /*
+                         * Remove purchased item
+                         * from cart.
+                         */
+
+                        cart =
+                            cart.filter(
+                                cartItem =>
+                                    cartItem.id !==
+                                    item.id
+                            );
+
+
+                        renderCart();
+
+
+                        /*
+                         * Reload products so the
+                         * dashboard has fresh data.
+                         */
+
+                        await loadProductsForStore();
+
+
+                    }
+                    catch (error) {
+
+                        console.error(
+                            error
+                        );
+
+
+                        message.textContent =
+                            error.message;
+
+                    }
+
+
+                    checkoutButton.disabled =
+                        cart.length === 0;
+
+                },
+
+
+            prefill: {
+
+                name:
+                    "",
+
+                email:
+                    "",
+
+                contact:
+                    ""
+
+            },
+
+
+            theme: {
+
+                color:
+                    "#111111"
+
+            }
+
+        };
+
+
+        const razorpay =
+            new Razorpay(options);
+
+
+        razorpay.on(
+            "payment.failed",
+            function(response) {
+
+                console.error(
+                    response.error
+                );
+
+
+                message.textContent =
+                    "Payment failed. Please try again.";
+
+
+                checkoutButton.disabled =
+                    false;
+
+            }
+        );
+
+
+        razorpay.open();
+
+
+        message.textContent =
+            "";
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "Checkout error:",
+            error
+        );
+
+
+        message.textContent =
+            error.message;
+
+
+        checkoutButton.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================
+   HTML ESCAPE
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================
+   CHECKOUT BUTTON
+========================================= */
+
+document.getElementById(
+    "checkoutButton"
+).addEventListener(
+    "click",
+    startCheckout
+);
+
+
+/* =========================================
+   PAGE LOAD
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadProductsForStore();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

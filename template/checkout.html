@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarginMind Checkout</title>
+</head>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<body>
+    <h1>MarginMind Checkout</h1>
+    <button id="paybutton">Pay 100</button>
+    <script>
+        const button=document.getElementById("paybutton");
+        button.addEventListener("click",function(){
+            fetch(
+                "/order",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({
+                        amount:500
+                    })
+                })
+                .then(
+                    response=>{
+                        return response.json();
+                    })
+                .then(
+                    data=>{
+                        const orderId=data.id;
+                        const options={
+                            key:"{{key_id}}",
+                            amount:data.amount,
+                            currency:data.currency,
+                            order_id:orderId,
+
+                            name:"MarginMind",
+                            description:"Test_Payment",
+
+                            handler: function(response){
+                                console.log(response);
+                                fetch("/verify-payment",{
+                                    method:"POST",
+                                    headers:{
+                                        "Content-Type":"application/json"
+                                    },
+                                    body:JSON.stringify(response)
+                                })
+                                .then(response=>response.json())
+                                .then(data=>{
+                                    console.log(data);
+                                });
+                            }
+                        };
+                        const razorpay=new Razorpay(options);
+                        razorpay.open();
+
+                    })
+        });
+    </script>
+</body>
+</html>

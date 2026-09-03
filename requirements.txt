@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+razorpay
+langchain
+langchain-mistralai
+jinja2
