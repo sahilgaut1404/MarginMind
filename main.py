@@ -341,11 +341,11 @@ def get_recommendation():
             if not product:
                 continue
 
-            # Recommendation is outdated
+            
             if product.price != recommendation.current_price:
                 continue
 
-            # Maximum allowed change = 10%
+            
             max_change = recommendation.current_price // 10
 
             price_diff = abs(
@@ -353,7 +353,7 @@ def get_recommendation():
                 recommendation.current_price
             )
 
-            # Reject recommendation if change > 10%
+            
             if price_diff > max_change:
                 continue
 
@@ -465,7 +465,8 @@ def chat(request: chatrequest):
         "yes please",
         "proceed",
         "go ahead",
-        "do it"
+        "do it",
+        "ok","okay"
     ]
 
     NO_MESSAGES = [
@@ -473,10 +474,6 @@ def chat(request: chatrequest):
         "no thanks",
         "cancel"
     ]
-
-    # ==================================================
-    # USER CONFIRMS PREVIOUS RECOMMENDATION
-    # ==================================================
 
     if (
         pending_recommendation is not None
@@ -487,31 +484,26 @@ def chat(request: chatrequest):
 
         try:
 
-            # Get latest product data from database
             product = db.query(Product).filter(
                 Product.id == pending_recommendation.product_id
             ).first()
 
-            # ------------------------------------------
-            # PRODUCT DOES NOT EXIST
-            # ------------------------------------------
-
+    
             if product is None:
 
                 pending_recommendation = None
                 recommendation_saved = False
 
                 answer = """
-⚠️ Recommendation is no longer valid.
+ Recommendation is no longer valid.
 
 The product no longer exists.
 
 Please ask me for a new pricing recommendation.
 """
 
-            # ------------------------------------------
-            # STALE PRICE CHECK
-            # ------------------------------------------
+            
+            
 
             elif (
                 product.price
@@ -522,7 +514,7 @@ Please ask me for a new pricing recommendation.
                 recommendation_saved = False
 
                 answer = """
-⚠️ Recommendation is no longer valid.
+ Recommendation is no longer valid.
 
 The product price has changed since the recommendation
 was created.
@@ -532,9 +524,6 @@ The old recommendation was NOT saved.
 Please ask me for a new pricing recommendation.
 """
 
-            # ------------------------------------------
-            # PRICE IS STILL CURRENT
-            # ------------------------------------------
 
             else:
 
@@ -546,7 +535,7 @@ Please ask me for a new pricing recommendation.
                 recommendation_saved = True
 
                 answer = f"""
-✅ Recommendation prepared.
+ Recommendation prepared.
 
 Product ID: {saved.product_id}
 
@@ -556,11 +545,11 @@ Current Price: ₹{saved.current_price / 100:.2f}
 
 Suggested Price: ₹{saved.suggested_price / 100:.2f}
 
-💡 Reason
+ Reason
 
 {saved.reason}
 
-⚠️ Status
+ Status
 
 Pending Merchant Approval
 
@@ -588,9 +577,6 @@ from the Recommendations page.
         }
 
 
-    # ==================================================
-    # USER CANCELS PENDING RECOMMENDATION
-    # ==================================================
 
     if (
         pending_recommendation is not None
@@ -620,11 +606,6 @@ You can ask me about another product or business metric.
             "response": answer
         }
 
-
-    # ==================================================
-    # ALREADY SAVED RECOMMENDATION
-    # ==================================================
-
     if (
         recommendation_saved
         and lower_message in YES_MESSAGES
@@ -653,9 +634,6 @@ The price has NOT been changed.
         }
 
 
-    # ==================================================
-    # NORMAL CHAT
-    # ==================================================
 
     chat_history.append({
         "role": "user",
@@ -669,9 +647,6 @@ The price has NOT been changed.
     answer = response["messages"][-1].content
 
 
-    # ==================================================
-    # CHECK FOR PRICING RECOMMENDATION
-    # ==================================================
 
     lower_answer = answer.lower()
 
@@ -759,9 +734,6 @@ Return:
         )
 
 
-        # ==================================================
-        # PYTHON CONTROLS PRICE CALCULATION
-        # ==================================================
 
         if recommendation.action == "increase_price":
 
@@ -778,17 +750,11 @@ Return:
             )
 
 
-        # ==================================================
-        # STORE TEMPORARILY
-        # ==================================================
 
         pending_recommendation = recommendation
         recommendation_saved = False
 
 
-    # ==================================================
-    # SAVE ASSISTANT RESPONSE
-    # ==================================================
 
     chat_history.append({
         "role": "assistant",
