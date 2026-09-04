@@ -699,6 +699,20 @@ Do NOT choose a different action.
 Use the product and action mentioned in the assistant's
 recommendation.
 
+The product_id MUST exactly match the product_id of the
+recommended product in merchant data.
+
+Do NOT invent, calculate, or guess the product_id.
+
+The current_price MUST exactly match the current_price
+of the recommended product in merchant data.
+
+Prices are stored in paise.
+
+100 paise = ₹1.00.
+
+Do NOT divide prices by 1000.
+
 Allowed actions:
 
 - increase_price
@@ -706,10 +720,11 @@ Allowed actions:
 
 Rules:
 
-1. product_id must exist in merchant data.
+1. product_id must exactly match the recommended
+product's product_id from merchant data.
 
 2. current_price must exactly match the product's
-current price.
+current_price from merchant data.
 
 3. suggested_price must be an integer number of paise.
 

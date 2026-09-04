@@ -76,38 +76,52 @@ def get_product_sales():
 
 @tool
 def analyze_growth():
-   """Analyze product sales and identify revenue growth opportunities."""
-   db=sessionlocal()
+    """Analyze product sales and identify revenue growth opportunities."""
 
-   try:
-      products=db.query(Product).all()
-      result=[]
-      for product in products:
-        orders=db.query(Order).filter(
-        Order.product_id==product.id,
-        Order.status=="paid"
-        ).all()
-        units_sold=sum(order.quantity for order in orders)
-        revenue_paise=sum(order.amount for order in orders)
-        revenue_per_unit=(
-            revenue_paise/units_sold
-            if units_sold>0
-            else 0
+    db = sessionlocal()
+
+    try:
+        products = db.query(Product).all()
+        result = []
+
+        for product in products:
+            orders = db.query(Order).filter(
+                Order.product_id == product.id,
+                Order.status == "paid"
+            ).all()
+
+            units_sold = sum(order.quantity for order in orders)
+
+            revenue_paise = sum(
+                order.amount for order in orders
             )
-        result.append(
-         {
-            "product_name": product.name,
-            "units_sold": units_sold,
-            "current_price": product.price,
-            "revenue_paise": revenue_paise,
-            "revenue_per_unit_paise": revenue_per_unit,
-            "stock": product.stock,
-            "currency": "INR"   
-         }
-      )
-      return result
-   finally:
-      db.close()   
+
+            revenue_per_unit = (
+                revenue_paise / units_sold
+                if units_sold > 0
+                else 0
+            )
+
+            result.append(
+                {
+                    "product_id": product.id,
+                    "product_name": product.name,
+                    "units_sold": units_sold,
+                    "current_price": product.price,
+                    "current_price_inr": product.price / 100,
+                    "revenue_paise": revenue_paise,
+                    "revenue_inr": revenue_paise / 100,
+                    "revenue_per_unit_paise": revenue_per_unit,
+                    "revenue_per_unit_inr": revenue_per_unit / 100,
+                    "stock": product.stock,
+                    "currency": "INR"
+                }
+            )
+
+        return result
+
+    finally:
+        db.close()
 
 
 def create_bundle(
