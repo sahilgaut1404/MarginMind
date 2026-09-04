@@ -95,6 +95,22 @@ def verify_payment(payment:paymentverification):
         quantity = int(
             order_details["notes"]["quantity"]
         )
+        product = db.query(Product).filter(
+                Product.id == product_id
+            ).first()
+        if product is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Product not found"
+            )
+
+        if product.stock < quantity:
+            raise HTTPException(
+                status_code=400,
+                detail="Insufficient stock"
+            )
+
+        product.stock -= quantity
         new_payment=Payment(
             order_id=payment.razorpay_order_id,
             payment_id=payment.razorpay_payment_id,
