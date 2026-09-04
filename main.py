@@ -758,6 +758,22 @@ Return:
 - current_price
 - suggested_price
 - reason
+12. The suggested price calculation represents a 10% maximum
+change when using current_price // 10.
+
+13. The reason MUST state the actual percentage change
+correctly.
+
+14. Do NOT say 1% unless the actual calculated change is 1%.
+
+15. Do NOT describe the paise difference as the percentage
+change.
+
+16. For an increase from ₹10,999.00 to ₹12,098.90,
+the reason must say approximately 10% increase.
+17. Do not calculate or estimate the percentage change in the
+reason. Simply say that the price is being increased or
+decreased within the allowed 10% limit.
 """
 
         recommendation = structured_llm.invoke(
