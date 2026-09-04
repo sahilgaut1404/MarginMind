@@ -6,3 +6,4 @@ razorpay
 langchain
 langchain-mistralai
 jinja2
+psycopg2-binary
