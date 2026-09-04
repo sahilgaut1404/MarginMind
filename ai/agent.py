@@ -27,7 +27,7 @@ class RecommendationOutput(BaseModel):
 
 
 llm = ChatMistralAI(
-    model="mistral-small-2603"
+    model="ministral-3b-2512"
 )
 
 
