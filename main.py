@@ -631,11 +631,11 @@ The price has NOT been changed.
     lower_answer = answer.lower()
 
     if (
-        "pricing recommendation" in lower_answer
-        and (
-            "increase price" in lower_answer
-            or "decrease price" in lower_answer
-        )
+    "pricing recommendation" in lower_answer
+    or "price increase" in lower_answer
+    or "price decrease" in lower_answer
+    or "increase price" in lower_answer
+    or "decrease price" in lower_answer
     ):
 
         growth_data = analyze_growth.invoke({})
