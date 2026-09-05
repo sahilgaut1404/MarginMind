@@ -1,7 +1,3 @@
-/* =========================================================
-   HELPER
-========================================================= */
-
 async function getJSON(url, options = {}) {
 
     const response = await fetch(url, options);
@@ -23,10 +19,6 @@ async function getJSON(url, options = {}) {
     return data;
 }
 
-
-/* =========================================================
-   DASHBOARD SUMMARY
-========================================================= */
 
 async function loadDashboardSummary() {
 
@@ -66,9 +58,6 @@ async function loadDashboardSummary() {
 }
 
 
-/* =========================================================
-   PRODUCTS
-========================================================= */
 
 let products = [];
 
@@ -114,9 +103,6 @@ async function loadProducts() {
 }
 
 
-/* =========================================================
-   CHECKOUT
-========================================================= */
 
 function initializeCheckout() {
 
@@ -132,7 +118,7 @@ function initializeCheckout() {
     const payButton =
         document.getElementById("payButton");
 
-    // Not dashboard / checkout page
+
     if (
         !productSelect ||
         !quantityInput ||
@@ -242,15 +228,7 @@ function initializeCheckout() {
                     "Creating order...";
 
 
-                /*
-                    IMPORTANT:
-
-                    product.price is already stored
-                    in paise.
-
-                    Therefore DO NOT multiply
-                    by 100 here.
-                */
+               
 
                 const orderData =
                     await getJSON(
@@ -403,9 +381,7 @@ function initializeCheckout() {
 }
 
 
-/* =========================================================
-   RECOMMENDATIONS
-========================================================= */
+
 
 async function loadRecommendations() {
 
@@ -604,9 +580,7 @@ async function rejectRecommendation(id) {
 }
 
 
-/* =========================================================
-   AUDIT LOGS
-========================================================= */
+
 
 async function loadAuditLogs() {
 
@@ -733,9 +707,6 @@ async function loadAuditLogs() {
 }
 
 
-/* =========================================================
-   CHATBOT MARKDOWN FORMATTER
-========================================================= */
 
 function escapeHTML(text) {
 
@@ -759,7 +730,6 @@ function formatAIResponse(text) {
         escapeHTML(text);
 
 
-    // Headings
     html =
         html.replace(
             /^### (.*)$/gm,
@@ -779,7 +749,7 @@ function formatAIResponse(text) {
         );
 
 
-    // Bold
+ 
     html =
         html.replace(
             /\*\*(.*?)\*\*/g,
@@ -787,7 +757,7 @@ function formatAIResponse(text) {
         );
 
 
-    // Bullet points
+
     html =
         html.replace(
             /^\s*[-*] (.*)$/gm,
@@ -795,7 +765,7 @@ function formatAIResponse(text) {
         );
 
 
-    // Numbered points
+   
     html =
         html.replace(
             /^\s*\d+\.\s+(.*)$/gm,
@@ -803,7 +773,6 @@ function formatAIResponse(text) {
         );
 
 
-    // Group consecutive list items
     html =
         html.replace(
             /(<li>.*?<\/li>\n?)+/gs,
@@ -811,7 +780,7 @@ function formatAIResponse(text) {
         );
 
 
-    // Horizontal markdown line
+   
     html =
         html.replace(
             /^---$/gm,
@@ -819,7 +788,7 @@ function formatAIResponse(text) {
         );
 
 
-    // Preserve line breaks
+    
     html =
         html.replace(
             /\n\n/g,
@@ -837,9 +806,6 @@ function formatAIResponse(text) {
 }
 
 
-/* =========================================================
-   CHATBOT
-========================================================= */
 
 function initChatbot() {
 
@@ -853,7 +819,7 @@ function initChatbot() {
         document.getElementById("chatMessages");
 
 
-    // Not chatbot page
+ 
     if (
         !chatForm ||
         !chatInput ||
@@ -879,7 +845,7 @@ function initChatbot() {
             }
 
 
-            /* USER MESSAGE */
+           
 
             const userMessage =
                 document.createElement("div");
@@ -904,7 +870,7 @@ function initChatbot() {
             chatInput.disabled = true;
 
 
-            /* BOT MESSAGE */
+           
 
             const botMessage =
                 document.createElement("div");
@@ -990,9 +956,6 @@ function initChatbot() {
 }
 
 
-/* =========================================================
-   PAGE INITIALIZATION
-========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
