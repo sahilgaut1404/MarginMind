@@ -16,6 +16,60 @@
         rel="stylesheet"
         href="/static/style.css"
     >
+    <style>
+
+    .ai-section {
+        margin-top: 30px;
+    }
+
+    .ai-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 25px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .ai-card h3 {
+        margin: 0 0 8px;
+        font-size: 19px;
+        color: #111111;
+    }
+
+    .ai-card p {
+        color: #666666;
+        margin: 0 0 20px;
+    }
+
+    .question-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .question {
+        padding: 14px 16px;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #fafafa;
+        color: #333333;
+        font-size: 14px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .question:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+    }
+
+    @media (max-width: 700px) {
+        .question-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
 
 </head>
 
@@ -113,8 +167,76 @@
                 </button>
 
             </form>
+ </div>
 
-        </div>
+        <section class="ai-section">
+
+            <div class="ai-card">
+
+                <h3>
+                    Ask MarginMind
+                </h3>
+
+                <p>
+                    Use the AI Assistant to understand your business
+                    and get data-driven recommendations.
+                </p>
+
+                <div class="question-grid">
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('How is my business performing?')"
+                    >
+                        How is my business performing?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('Which product sells the most?')"
+                    >
+                        Which product sells the most?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('Which product should I change the price for?')"
+                    >
+                        Which product should I change the price for?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('Which product has excess stock?')"
+                    >
+                        Which product has excess stock?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('What can I do to increase sales?')"
+                    >
+                        What can I do to increase sales?
+                    </button>
+
+                    <button
+                        type="button"
+                        class="question"
+                        onclick="askQuestion('Show me my product performance')"
+                    >
+                        Show me my product performance
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </section>
 
@@ -122,6 +244,25 @@
 
 
 <script src="/static/script.js"></script>
+<script>
+
+    function askQuestion(question) {
+
+        const input = document.getElementById("chatInput");
+        const form = document.getElementById("chatForm");
+
+        input.value = question;
+
+        form.dispatchEvent(
+            new Event("submit", {
+                bubbles: true,
+                cancelable: true
+            })
+        );
+
+    }
+
+</script>
 
 </body>
 </html>
