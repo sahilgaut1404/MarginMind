@@ -677,132 +677,146 @@ The price has NOT been changed.
         growth_data = analyze_growth.invoke({})
 
         recommendation_prompt = f"""
-You are MarginMind's pricing recommendation engine.
+    You are MarginMind's pricing recommendation engine.
 
-Merchant data:
+    Merchant data:
 
-{growth_data}
+    {growth_data}
 
-The MarginMind assistant has already analyzed the
-merchant data and recommended a product:
+    The MarginMind assistant has already analyzed the merchant data
+    and recommended a product:
 
-{answer}
+    {answer}
 
-Create the SAME recommendation described by the assistant.
+    Create the SAME recommendation described by the assistant.
 
-IMPORTANT:
+    IMPORTANT:
 
-Do NOT choose a different product.
+    1. Do NOT choose a different product.
 
-Do NOT choose a different action.
+    2. Do NOT choose a different action.
 
-Use the product and action mentioned in the assistant's
-recommendation.
+    3. Use the exact product and action mentioned in the assistant's
+    recommendation.
 
-The product_id MUST exactly match the product_id of the
-recommended product in merchant data.
+    4. The product_id MUST exactly match the product_id of the
+    recommended product in merchant data.
 
-Do NOT invent, calculate, or guess the product_id.
+    5. Do NOT invent, calculate, guess, or modify the product_id.
 
-The current_price MUST exactly match the current_price
-of the recommended product in merchant data.
+    6. The current_price MUST exactly match the current_price of
+    the recommended product in merchant data.
 
-Prices are stored in paise.
+    7. Do NOT calculate, estimate, round, modify, or invent
+    current_price.
 
-100 paise = ₹1.00.
+    8. The product_id and current_price MUST come from the same
+    product record in merchant data.
 
-Do NOT divide prices by 1000.
+    9. Prices are stored in paise.
 
-Allowed actions:
+    10. 100 paise = ₹1.00.
 
-- increase_price
-- decrease_price
+    11. Never divide prices by 1000.
 
-Rules:
+    12. Never add or subtract arbitrary amounts from current_price.
 
-1. product_id must exactly match the recommended
-product's product_id from merchant data.
+    Allowed actions:
 
-2. current_price must exactly match the product's
-current_price from merchant data.
+    - increase_price
+    - decrease_price
 
-3. suggested_price must be an integer number of paise.
+    Pricing rules:
 
-4. Maximum price change is 10%.
+    13. suggested_price MUST be an integer number of paise.
 
-5. For increase_price:
+    14. The maximum allowed price change is 10%.
 
-suggested_price =
-current_price + (current_price // 10)
+    15. For increase_price, the suggested price is:
 
-6. For decrease_price:
+    current_price + (current_price // 10)
 
-suggested_price =
-current_price - (current_price // 10)
+    16. For decrease_price, the suggested price is:
 
-7. Never exceed the 10% limit.
+    current_price - (current_price // 10)
 
-8. Use only actual merchant data.
+    17. Never exceed the 10% limit.
 
-9. Never invent sales, revenue, stock or prices.
+    18. Use only actual merchant data.
 
-10. Do not assume customer behavior or price elasticity.
+    19. Never invent sales, revenue, stock, prices, product IDs,
+    or other business data.
 
-11. Do not claim that the price change will definitely
-increase sales or revenue.
+    20. Do not assume customer behavior or price elasticity.
 
-Return:
+    21. Do not claim that a price change will definitely increase
+    sales or revenue.
 
-- action
-- product_id
-- current_price
-- suggested_price
-- reason
-12. The suggested price calculation represents a 10% maximum
-change when using current_price // 10.
+    Reason rules:
 
-13. The reason MUST state the actual percentage change
-correctly.
+    22. The reason must be based only on the actual merchant data.
 
-14. Do NOT say 1% unless the actual calculated change is 1%.
+    23. Do not invent statistics or business facts.
 
-15. Do NOT describe the paise difference as the percentage
-change.
+    24. Do not state an incorrect percentage.
 
-16. For an increase from ₹10,999.00 to ₹12,098.90,
-the reason must say approximately 10% increase.
-17. Do not calculate or estimate the percentage change in the
-reason. Simply say that the price is being increased or
-decreased within the allowed 10% limit.
-The assistant must not invent a suggested price.
+    25. Do not describe the paise difference as a percentage.
 
-The suggested price must be calculated using the exact
-current_price from merchant data.
+    26. Do not say 1% unless the actual recommendation is a 1% change.
 
-The final recommendation must match the structured
-recommendation exactly.
+    27. Do not calculate or estimate the percentage change in the
+    reason.
+
+    28. Simply explain that the price is being increased or
+    decreased within the allowed 10% limit.
+
+    29. The reason must not contain a different price from the
+    calculated recommendation.
+
+    30. Do not create alternative recommendations.
+
+    The assistant's recommendation and the structured recommendation
+    must refer to the same product and same action.
+
+    Return ONLY:
+
+    - action
+    - product_id
+    - current_price
+    - suggested_price
+    - reason
 """
 
-        recommendation = structured_llm.invoke(
-            recommendation_prompt
+        recommendation = structured_llm.invoke(recommendation_prompt)
+
+        product_data = next(
+            (
+                product
+                for product in growth_data
+                if product["product_id"] == recommendation.product_id
+            ),
+            None
         )
 
+        if product_data is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid product recommendation"
+            )
 
+        recommendation.current_price = product_data["current_price"]
 
         if recommendation.action == "increase_price":
-
             recommendation.suggested_price = (
                 recommendation.current_price
                 + recommendation.current_price // 10
             )
 
         elif recommendation.action == "decrease_price":
-
             recommendation.suggested_price = (
                 recommendation.current_price
                 - recommendation.current_price // 10
             )
-
 
 
         pending_recommendation = recommendation
