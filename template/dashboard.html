@@ -22,10 +22,7 @@
 
     <style>
 
-        /* =========================================
-           DASHBOARD
-        ========================================= */
-
+    
         .dashboard-container {
             max-width: 1250px;
             margin: 0 auto;
@@ -52,9 +49,7 @@
         }
 
 
-        /* =========================================
-           MAIN SHOP LAYOUT
-        ========================================= */
+     
 
         .shop-layout {
             display: grid;
@@ -64,9 +59,7 @@
         }
 
 
-        /* =========================================
-           PRODUCTS
-        ========================================= */
+   
 
         .products-section {
             background: #fff;
@@ -103,9 +96,7 @@
         }
 
 
-        /* =========================================
-           PRODUCT CARD
-        ========================================= */
+    
 
         .product-card {
             border: 1px solid #e5e7eb;
@@ -180,9 +171,7 @@
         }
 
 
-        /* =========================================
-           CART
-        ========================================= */
+      
 
         .cart-section {
             background: #fff;
@@ -223,9 +212,8 @@
         }
 
 
-        /* =========================================
-           CART ITEM
-        ========================================= */
+      
+    
 
         .cart-item {
             border-bottom: 1px solid #eee;
@@ -297,9 +285,7 @@
         }
 
 
-        /* =========================================
-           CART TOTAL
-        ========================================= */
+      
 
         .cart-total {
             border-top: 1px solid #e5e7eb;
@@ -361,9 +347,7 @@
         }
 
 
-        /* =========================================
-           RESPONSIVE
-        ========================================= */
+        
 
         @media (max-width: 950px) {
 
@@ -444,9 +428,7 @@
 <main class="dashboard-container">
 
 
-    <!-- =========================================
-         HEADING
-    ========================================== -->
+
 
     <div class="dashboard-heading">
 
@@ -461,16 +443,12 @@
     </div>
 
 
-    <!-- =========================================
-         SHOP
-    ========================================== -->
+
 
     <div class="shop-layout">
 
 
-        <!-- =====================================
-             PRODUCTS
-        ====================================== -->
+       
 
         <section class="products-section">
 
@@ -503,9 +481,7 @@
         </section>
 
 
-        <!-- =====================================
-             CART
-        ====================================== -->
+       
 
         <aside class="cart-section">
 
@@ -591,18 +567,14 @@
 <script>
 
 
-/* =========================================
-   CART
-========================================= */
+
 
 let products = [];
 
 let cart = [];
 
 
-/* =========================================
-   LOAD PRODUCTS
-========================================= */
+
 
 async function loadProductsForStore() {
 
@@ -652,9 +624,7 @@ async function loadProductsForStore() {
 }
 
 
-/* =========================================
-   RENDER PRODUCTS
-========================================= */
+
 
 function renderProducts() {
 
@@ -722,9 +692,7 @@ function renderProducts() {
 }
 
 
-/* =========================================
-   ADD TO CART
-========================================= */
+
 
 function addToCart(productId) {
 
@@ -783,9 +751,7 @@ function addToCart(productId) {
 }
 
 
-/* =========================================
-   CHANGE QUANTITY
-========================================= */
+
 
 function changeQuantity(
     productId,
@@ -833,9 +799,7 @@ function changeQuantity(
 }
 
 
-/* =========================================
-   REMOVE FROM CART
-========================================= */
+
 
 function removeFromCart(productId) {
 
@@ -850,9 +814,6 @@ function removeFromCart(productId) {
 }
 
 
-/* =========================================
-   RENDER CART
-========================================= */
 
 function renderCart() {
 
@@ -1049,9 +1010,7 @@ function renderCart() {
 }
 
 
-/* =========================================
-   CHECKOUT
-========================================= */
+
 
 async function startCheckout() {
 
@@ -1085,14 +1044,6 @@ async function startCheckout() {
     try {
 
 
-        /*
-         * Current backend /order accepts
-         * one product per order.
-         *
-         * Therefore, checkout is started
-         * for the first cart item.
-         */
-
         const item = cart[0];
 
 
@@ -1101,9 +1052,7 @@ async function startCheckout() {
             item.quantity;
 
 
-        /* =====================================
-           CREATE RAZORPAY ORDER
-        ====================================== */
+      
 
         const orderResponse =
             await fetch(
@@ -1148,9 +1097,7 @@ async function startCheckout() {
             await orderResponse.json();
 
 
-        /* =====================================
-           GET RAZORPAY KEY
-        ====================================== */
+   
 
         const keyResponse =
             await fetch(
@@ -1171,9 +1118,7 @@ async function startCheckout() {
             await keyResponse.json();
 
 
-        /* =====================================
-           RAZORPAY CHECKOUT
-        ====================================== */
+      
 
         const options = {
 
@@ -1256,10 +1201,7 @@ async function startCheckout() {
                             "Payment verified successfully.";
 
 
-                        /*
-                         * Remove purchased item
-                         * from cart.
-                         */
+                     
 
                         cart =
                             cart.filter(
@@ -1272,10 +1214,7 @@ async function startCheckout() {
                         renderCart();
 
 
-                        /*
-                         * Reload products so the
-                         * dashboard has fresh data.
-                         */
+                       
 
                         await loadProductsForStore();
 
@@ -1376,9 +1315,7 @@ async function startCheckout() {
 }
 
 
-/* =========================================
-   HTML ESCAPE
-========================================= */
+
 
 function escapeHTML(value) {
 
@@ -1412,9 +1349,7 @@ function escapeHTML(value) {
 }
 
 
-/* =========================================
-   CHECKOUT BUTTON
-========================================= */
+
 
 document.getElementById(
     "checkoutButton"
@@ -1424,9 +1359,7 @@ document.getElementById(
 );
 
 
-/* =========================================
-   PAGE LOAD
-========================================= */
+
 
 document.addEventListener(
     "DOMContentLoaded",
