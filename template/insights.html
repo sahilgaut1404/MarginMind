@@ -22,10 +22,7 @@
 
     <style>
 
-        /* =========================================
-           INSIGHTS PAGE
-        ========================================= */
-
+     
         .insights-page {
             max-width: 1250px;
             margin: 0 auto;
@@ -51,9 +48,7 @@
         }
 
 
-        /* =========================================
-           BUSINESS OVERVIEW
-        ========================================= */
+      
 
         .overview-section {
             margin-bottom: 30px;
@@ -98,9 +93,7 @@
         }
 
 
-        /* =========================================
-           PRODUCT OVERVIEW
-        ========================================= */
+     
 
         .product-overview {
             margin-bottom: 30px;
@@ -145,9 +138,7 @@
         }
 
 
-        /* =========================================
-           CHART GRID
-        ========================================= */
+      
 
         .charts-grid {
             display: grid;
@@ -200,9 +191,7 @@
             height: 360px;
         }
 
-        /* =========================================
-           RESPONSIVE
-        ========================================= */
+       
 
         @media (max-width: 900px) {
 
@@ -303,9 +292,7 @@
 <main class="insights-page">
 
 
-    <!-- =========================================
-         PAGE HEADING
-    ========================================== -->
+    
 
     <div class="page-heading">
 
@@ -321,9 +308,7 @@
     </div>
 
 
-    <!-- =========================================
-         BUSINESS OVERVIEW
-    ========================================== -->
+ 
 
     <section class="overview-section">
 
@@ -335,7 +320,6 @@
         <div class="overview-grid">
 
 
-            <!-- TOTAL REVENUE -->
 
             <div class="overview-card">
 
@@ -353,8 +337,6 @@
             </div>
 
 
-            <!-- TOTAL ORDERS -->
-
             <div class="overview-card">
 
                 <span class="overview-label">
@@ -371,7 +353,7 @@
             </div>
 
 
-            <!-- UNITS SOLD -->
+        
 
             <div class="overview-card">
 
@@ -394,9 +376,7 @@
     </section>
 
 
-    <!-- =========================================
-         PRODUCT OVERVIEW
-    ========================================== -->
+ 
 
     <section class="product-overview">
 
@@ -461,14 +441,11 @@
     </section>
 
 
-    <!-- =========================================
-         CHARTS
-    ========================================== -->
+
 
     <div class="charts-grid">
 
 
-        <!-- PRODUCT PRICES -->
 
         <div class="chart-card">
 
@@ -494,7 +471,7 @@
         </div>
 
 
-        <!-- INVENTORY -->
+
 
         <div class="chart-card">
 
@@ -520,8 +497,7 @@
         </div>
 
 
-        <!-- PRICE VS STOCK -->
-
+     
         <div class="chart-card full-width">
 
             <div class="chart-header">
@@ -558,9 +534,7 @@
 <script>
 
 
-/* =========================================
-   LOAD BUSINESS SUMMARY
-========================================= */
+
 
 async function loadBusinessSummary() {
 
@@ -583,10 +557,7 @@ async function loadBusinessSummary() {
             await response.json();
 
 
-        /*
-         * Backend stores revenue in paise.
-         * Convert to rupees for display.
-         */
+     
 
         document.getElementById(
             "totalRevenue"
@@ -621,9 +592,7 @@ async function loadBusinessSummary() {
 }
 
 
-/* =========================================
-   LOAD PRODUCT DATA
-========================================= */
+
 
 async function loadInsightCharts() {
 
@@ -656,10 +625,7 @@ async function loadInsightCharts() {
         }
 
 
-        /* =========================================
-           PREPARE DATA
-        ========================================= */
-
+     
         const productNames =
             products.map(
                 product => product.name
@@ -680,10 +646,7 @@ async function loadInsightCharts() {
             );
 
 
-        /* =========================================
-           PRODUCT KPIs
-        ========================================= */
-
+        
         const totalStock =
             stock.reduce(
                 (sum, value) =>
@@ -719,9 +682,6 @@ async function loadInsightCharts() {
             averagePrice.toFixed(2);
 
 
-        /* =========================================
-           PRICE CHART
-        ========================================= */
 
         new Chart(
 
@@ -798,10 +758,7 @@ async function loadInsightCharts() {
         );
 
 
-        /* =========================================
-           STOCK CHART
-        ========================================= */
-
+     
         new Chart(
 
             document.getElementById(
@@ -866,9 +823,7 @@ async function loadInsightCharts() {
         );
 
 
-        /* =========================================
-           PRICE VS STOCK CHART
-        ========================================= */
+        
 
         new Chart(
 
@@ -996,9 +951,7 @@ async function loadInsightCharts() {
 }
 
 
-/* =========================================
-   PAGE LOAD
-========================================= */
+
 
 document.addEventListener(
     "DOMContentLoaded",
