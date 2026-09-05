@@ -124,49 +124,6 @@ def analyze_growth():
         db.close()
 
 
-def create_bundle(
-   name:str,
-   product_1_id:int,
-   product_2_id:int,
-   bundle_price:int
-):
-   db=sessionlocal()
-   try:
-      product_1=db.query(Product).filter(Product.id==product_1_id).first()
-      product_2=db.query(Product).filter(Product.id==product_2_id).first()
-      
-      if not product_1 or not product_2:
-         raise ValueError("One or both products not found")
-      if bundle_price<=0:
-         raise ValueError("Bundle Price must be greater than 0")
-      
-      new_bundle=Bundle(
-         name=name,
-         product_1_id=product_1_id,
-         product_2_id=product_2_id,
-         bundle_price=bundle_price,
-         status="pending"
-      )
-      db.add(new_bundle)
-      db.commit()
-      db.refresh(new_bundle)
-      
-      return{
-         "status": "success",
-         "bundle_id": new_bundle.id,
-         "bundle_name": new_bundle.name,
-         "bundle_price": new_bundle.bundle_price,
-         "products": [
-               product_1.name,
-               product_2.name
-            ]
-      }
-      
-   except Exception:
-      db.rollback()
-      raise
-   finally:
-      db.close()
 
 
 def update_product_price(product_id:int,new_price:int):

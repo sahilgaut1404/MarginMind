@@ -183,43 +183,7 @@ def get_product():
         return products
     finally:
         db.close()
-@app.post("/approve-bundle")
-def approve_bundle(bundle_id:int):
-    db=sessionlocal()
-    try:
-        bundle=db.query(Bundle).filter(Bundle.id==bundle_id).first()
-        
-        if not bundle:
-            raise HTTPException(
-                status_code=404,
-                detail="bundle not found"
-            )
-        if bundle.status=="active":
-            raise HTTPException(
-                status_code=400,
-                detail="bundle is already active"
-            )
-        bundle.status="active"
-        db.commit()
-        db.refresh(bundle)
-        
-        return {
-        "status": "success",
-        "message": "Bundle approved successfully",
-        "bundle_id": bundle.id,
-        "bundle_name": bundle.name
-        }
-    except HTTPException:
-        raise
-    except Exception:
-        db.rollback()
-        raise HTTPException(
-            status_code=500,
-            detail="failed to approve bundle"
-        )
-    finally:
-        db.close()
-        
+
 @app.post("/price change approval")
 def price_change_approval(recommendation_id:int):
     db=sessionlocal()
