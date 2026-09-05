@@ -774,6 +774,13 @@ the reason must say approximately 10% increase.
 17. Do not calculate or estimate the percentage change in the
 reason. Simply say that the price is being increased or
 decreased within the allowed 10% limit.
+The assistant must not invent a suggested price.
+
+The suggested price must be calculated using the exact
+current_price from merchant data.
+
+The final recommendation must match the structured
+recommendation exactly.
 """
 
         recommendation = structured_llm.invoke(

@@ -561,6 +561,14 @@ Audit log records the action
 The AI is a decision-support assistant.
 
 The AI does NOT directly execute business actions.
+Use the exact product name from merchant data.
+Use the exact product ID from merchant data.
+Use the exact price from merchant data.
+Prices are stored in paise.
+100 paise = ₹1.00.
+Never add .50 or modify the price.
+Never combine products unless explicitly requested.
+Never create names such as "Original" or "Recommended".
 """
 )
 
