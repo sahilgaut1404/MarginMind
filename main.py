@@ -728,8 +728,10 @@ The price has NOT been changed.
 
     Pricing rules:
 
-    13. suggested_price MUST be an integer number of paise.
-
+    13. The application will calculate suggested_price,
+        Do not calculate suggested_price yourself,
+        Return the product_id and action based on the merchant data,
+        Return current_price from the merchant data
     14. The maximum allowed price change is 10%.
 
     15. For increase_price, the suggested price is:
