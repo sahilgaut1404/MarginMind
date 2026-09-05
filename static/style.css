@@ -9,7 +9,7 @@ body {
     color: #222;
 }
 
-/* ================= HEADER ================= */
+
 
 header {
     background: #111;
@@ -27,7 +27,7 @@ header p {
     margin: 10px 0 0;
 }
 
-/* ================= NAVIGATION ================= */
+
 
 .top-nav {
     background: white;
@@ -51,7 +51,7 @@ header p {
     color: white;
 }
 
-/* ================= MAIN ================= */
+
 
 main {
     max-width: 1200px;
@@ -68,7 +68,7 @@ section h2 {
     margin-bottom: 25px;
 }
 
-/* ================= CARDS ================= */
+
 
 .card,
 .recommendation-card,
@@ -87,7 +87,7 @@ section h2 {
     font-size: 20px;
 }
 
-/* ================= METRICS ================= */
+
 
 .metrics {
     display: flex;
@@ -104,7 +104,7 @@ section h2 {
     margin-bottom: 0;
 }
 
-/* ================= FORM ================= */
+
 
 label {
     display: block;
@@ -142,7 +142,7 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* ================= RECOMMENDATIONS ================= */
+
 
 .recommendation-card {
     padding: 25px;
@@ -173,7 +173,7 @@ button:disabled {
     font-weight: bold;
 }
 
-/* ================= AUDIT ================= */
+
 
 .audit-card {
     padding: 20px;
@@ -194,7 +194,7 @@ button:disabled {
     font-weight: bold;
 }
 
-/* ================= CHATBOT ================= */
+
 
 .chatbox {
     background: white;
@@ -235,7 +235,7 @@ button:disabled {
     line-height: 1.6;
 }
 
-/* AI response formatting */
+
 
 .chat-message h1,
 .chat-message h2,
@@ -262,7 +262,7 @@ button:disabled {
     font-weight: bold;
 }
 
-/* Chat input */
+
 
 .chat-input {
     display: flex;
@@ -280,7 +280,7 @@ button:disabled {
     margin: 0;
 }
 
-/* ================= INSIGHTS ================= */
+
 
 .insight-card {
     background: white;
@@ -306,7 +306,7 @@ button:disabled {
     margin-bottom: 10px;
 }
 
-/* ================= RESPONSIVE ================= */
+
 
 @media (max-width: 768px) {
 
