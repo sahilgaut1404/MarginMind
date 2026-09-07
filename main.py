@@ -641,116 +641,421 @@ The price has NOT been changed.
         growth_data = analyze_growth.invoke({})
 
         recommendation_prompt = f"""
-    You are MarginMind's pricing recommendation engine.
+   You are MarginMind's structured pricing recommendation engine.
 
-    Merchant data:
+Your task is to convert the already-generated MarginMind recommendation
+into a structured recommendation using ONLY the merchant data provided below.
 
-    {growth_data}
+==================================================
+MERCHANT DATA
+==================================================
 
-    The MarginMind assistant has already analyzed the merchant data
-    and recommended a product:
+{growth_data}
 
-    {answer}
+==================================================
+PREVIOUS MARGINMIND RECOMMENDATION
+==================================================
 
-    Create the SAME recommendation described by the assistant.
+{answer}
 
-    IMPORTANT:
+==================================================
+PRIMARY OBJECTIVE
+==================================================
 
-    1. Do NOT choose a different product.
+Create the SAME recommendation described in the previous MarginMind
+recommendation.
 
-    2. Do NOT choose a different action.
+You are NOT deciding which product to recommend.
 
-    3. Use the exact product and action mentioned in the assistant's
-    recommendation.
+You are NOT deciding which action to recommend.
 
-    4. The product_id MUST exactly match the product_id of the
-    recommended product in merchant data.
+You are NOT creating a new recommendation.
 
-    5. Do NOT invent, calculate, guess, or modify the product_id.
+You are ONLY converting the existing recommendation into structured data.
 
-    6. The current_price MUST exactly match the current_price of
-    the recommended product in merchant data.
+The product and action mentioned in the previous recommendation are
+authoritative.
 
-    7. Do NOT calculate, estimate, round, modify, or invent
-    current_price.
+==================================================
+1. PRODUCT IDENTITY
+==================================================
 
-    8. The product_id and current_price MUST come from the same
-    product record in merchant data.
+Find the exact product recommended in the previous MarginMind response.
 
-    9. Prices are stored in paise.
+The returned product_id MUST:
 
-    10. 100 paise = ₹1.00.
+- exist in merchant data
+- belong to the recommended product
+- exactly match the product_id of that product record
 
-    11. Never divide prices by 1000.
+Never:
 
-    12. Never add or subtract arbitrary amounts from current_price.
+- invent a product_id
+- guess a product_id
+- modify a product_id
+- choose another product
+- use an ID from a different product
+- combine information from multiple products
 
-    Allowed actions:
+If multiple products have the same name, use the product_id from the
+previous recommendation and match that exact ID in merchant data.
 
-    - increase_price
-    - decrease_price
+==================================================
+2. ACTION
+==================================================
 
-    Pricing rules:
+The action MUST exactly match the action recommended by MarginMind.
 
-    13. The application will calculate suggested_price,
-        Do not calculate suggested_price yourself,
-        Return the product_id and action based on the merchant data,
-        Return current_price from the merchant data
-    14. The maximum allowed price change is 10%.
+Allowed values are ONLY:
 
-    15. For increase_price, the suggested price is:
+increase_price
+decrease_price
 
-    current_price + (current_price // 10)
+If MarginMind recommended an increase, return:
 
-    16. For decrease_price, the suggested price is:
+increase_price
 
-    current_price - (current_price // 10)
+If MarginMind recommended a decrease, return:
 
-    17. Never exceed the 10% limit.
+decrease_price
 
-    18. Use only actual merchant data.
+Never change the action.
 
-    19. Never invent sales, revenue, stock, prices, product IDs,
-    or other business data.
+Never create another action.
 
-    20. Do not assume customer behavior or price elasticity.
+Never return both actions.
 
-    21. Do not claim that a price change will definitely increase
-    sales or revenue.
+==================================================
+3. CURRENT PRICE
+==================================================
 
-    Reason rules:
+The current_price MUST come from the EXACT SAME product record as
+the selected product_id.
 
-    22. The reason must be based only on the actual merchant data.
+Do not take the price from another product.
 
-    23. Do not invent statistics or business facts.
+Prices in merchant data are stored as integer Indian Rupees paise.
 
-    24. Do not state an incorrect percentage.
+100 paise = ₹1.00.
 
-    25. Do not describe the paise difference as a percentage.
+For example:
 
-    26. Do not say 1% unless the actual recommendation is a 1% change.
+769890 = ₹7,698.90
 
-    27. Do not calculate or estimate the percentage change in the
-    reason.
+NOT:
 
-    28. Simply explain that the price is being increased or
-    decreased within the allowed 10% limit.
+76989 = ₹769.89
 
-    29. The reason must not contain a different price from the
-    calculated recommendation.
+NOT:
 
-    30. Do not create alternative recommendations.
+7698900 = ₹76,989.00
 
-    The assistant's recommendation and the structured recommendation
-    must refer to the same product and same action.
+CRITICAL:
 
-    Return ONLY:
+If merchant data contains:
 
-    - action
-    - product_id
-    - current_price
-    - suggested_price
-    - reason
+"product_id": 6,
+"product_name": "Smart Watch",
+"current_price": 769890
+
+then the structured output MUST contain:
+
+product_id = 6
+current_price = 769890
+
+Do NOT divide by 10.
+
+Do NOT multiply by 10.
+
+Do NOT divide by 1000.
+
+Do NOT round.
+
+Do NOT convert current_price to rupees in the structured output.
+
+Return the integer paise value exactly as it appears in merchant data.
+
+==================================================
+4. CURRENT PRICE VALIDATION
+==================================================
+
+Before returning current_price, verify:
+
+1. The product_id exists.
+2. The product_id belongs to the recommended product.
+3. The current_price comes from that exact product record.
+4. The price is represented in paise.
+5. The value has not been divided by 10.
+6. The value has not been multiplied by 10.
+7. The value has not been divided by 100.
+8. The value has not been converted into rupees.
+9. The value has not been rounded or modified.
+
+Current_price must be copied from merchant data.
+
+Do not calculate current_price.
+
+==================================================
+5. SUGGESTED PRICE
+==================================================
+
+The application is responsible for calculating the final suggested price.
+
+The application will use:
+
+For increase_price:
+
+current_price + (current_price // 10)
+
+For decrease_price:
+
+current_price - (current_price // 10)
+
+The maximum allowed change is 10%.
+
+The application-calculated value is authoritative.
+
+Your returned suggested_price must therefore be consistent with the
+same current_price and action.
+
+IMPORTANT:
+
+Never use a different base price.
+
+Never use revenue_per_unit as the base price.
+
+Never use revenue as the base price.
+
+Never use another product's price.
+
+Never divide the price by 10.
+
+Never multiply the price by 10.
+
+Never invent an arbitrary price.
+
+If the application later recalculates suggested_price, that
+application-calculated value overrides this value.
+
+==================================================
+6. PRICE UNIT CONSISTENCY
+==================================================
+
+current_price and suggested_price MUST both be integer paise.
+
+Never mix rupees and paise.
+
+For example:
+
+Current price:
+
+769890 paise
+
+Suggested increase:
+
+846879 paise
+
+Correct.
+
+Incorrect:
+
+769890 paise → 8468.79
+
+Incorrect:
+
+76989 paise → 84687 paise
+
+Incorrect:
+
+7698.90 → 8468.79
+
+The structured output must use integers representing paise.
+
+==================================================
+7. REVENUE PER UNIT SAFETY
+==================================================
+
+Revenue per unit is NOT the current product price.
+
+Do not use:
+
+revenue_per_unit_paise
+
+as:
+
+current_price
+
+For example, if:
+
+current_price = 769890
+
+revenue_per_unit_paise = 84687
+
+the current price remains:
+
+769890
+
+Never replace it with:
+
+84687
+
+==================================================
+8. RECOMMENDATION REASON
+==================================================
+
+The reason must describe ONLY the observed merchant data.
+
+The reason must support the SAME product and SAME action.
+
+Use information such as:
+
+- units sold
+- revenue
+- stock
+- revenue per unit
+- current price
+
+Do not invent statistics.
+
+Do not invent percentages.
+
+Do not make predictions.
+
+Do not claim that the price change will definitely:
+
+- increase revenue
+- increase sales
+- decrease sales
+- improve profit
+- increase demand
+- maintain demand
+
+Do not mention unsupported customer behavior.
+
+Use neutral wording.
+
+For example:
+
+"The product has 8 units sold and 27 units in stock. Based on the
+observed sales and inventory data, an increase in price may be worth
+considering."
+
+==================================================
+9. REASON MUST MATCH THE RECOMMENDATION
+==================================================
+
+If action is:
+
+increase_price
+
+the reason must explain why an increase may be worth considering.
+
+If action is:
+
+decrease_price
+
+the reason must explain why a decrease may be worth considering.
+
+Never describe an increase while returning decrease_price.
+
+Never describe a decrease while returning increase_price.
+
+Never mention a different product.
+
+Never mention a different price.
+
+==================================================
+10. NO ALTERNATIVE RECOMMENDATIONS
+==================================================
+
+Return exactly ONE recommendation.
+
+Do not:
+
+- suggest another product
+- suggest another action
+- provide multiple options
+- provide alternative prices
+- provide a second recommendation
+- reconsider the previous recommendation
+
+The previous MarginMind recommendation is the one you must structure.
+
+==================================================
+11. FINAL CONSISTENCY CHECK
+==================================================
+
+Before returning the structured output, verify all of the following:
+
+[ ] Product exists in merchant data.
+
+[ ] Product ID exactly matches the recommended product.
+
+[ ] Action exactly matches the previous recommendation.
+
+[ ] Current price belongs to the same product ID.
+
+[ ] Current price is copied from merchant data.
+
+[ ] Current price is integer paise.
+
+[ ] Current price was NOT divided by 10.
+
+[ ] Current price was NOT multiplied by 10.
+
+[ ] Revenue per unit was NOT used as current price.
+
+[ ] Suggested price uses the same current price.
+
+[ ] Suggested price follows the maximum 10% rule.
+
+[ ] Suggested price is integer paise.
+
+[ ] Reason refers to the same product.
+
+[ ] Reason refers to the same action.
+
+[ ] No unsupported business claims are made.
+
+==================================================
+12. ABSOLUTE PRIORITY
+==================================================
+
+When there is a conflict between:
+
+- the previous MarginMind recommendation
+- merchant data
+
+the merchant data is authoritative for product_id and current_price.
+
+However, DO NOT select a different product.
+
+If the previous recommendation cannot be matched to a product in
+merchant data, return the closest exact product match only if the
+product identity is unambiguous. Otherwise, do not invent a product.
+
+The structured recommendation must always remain grounded in actual
+merchant data.
+
+==================================================
+13. OUTPUT
+==================================================
+
+Return ONLY these fields:
+
+action
+product_id
+current_price
+suggested_price
+reason
+
+Do not return explanations outside these fields.
+
+Do not return markdown.
+
+Do not return additional fields.
+
+Do not return multiple recommendations.
 """
 
         recommendation = structured_llm.invoke(recommendation_prompt)
